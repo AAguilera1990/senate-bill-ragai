@@ -23,12 +23,11 @@ quant_config = BitsAndBytesConfig(
 RAG_MODEL_ID = "mistralai/Mistral-7B-v0.1"
 
 # 2. Load tokenizer & quantized model for RAG generation
-tokenizer = AutoTokenizer.from_pretrained(RAG_MODEL_ID, token=True)
-model     = AutoModelForCausalLM.from_pretrained(
+tokenizer = AutoTokenizer.from_pretrained(RAG_MODEL_ID)
+model = AutoModelForCausalLM.from_pretrained(
     RAG_MODEL_ID,
     quantization_config=quant_config,
-    device_map="auto",
-    token=True
+    device_map="auto"
 )
 
 # 3. Wrap in a Hugging Face text-generation pipeline (limit new tokens)
