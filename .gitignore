@@ -1,0 +1,14 @@
+.venv/
+*.map
+*.exe
+*.dll
+*.pyd
+__pycache__/
+.ipynb_checkpoints/
+.git
+BBB/*.pdf
+*.pyc
+*.pdf
+.env
+.ipynb
+BBB/

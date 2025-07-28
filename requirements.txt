@@ -1,0 +1,9 @@
+transformers
+langchain
+sentence-transformers
+chromadb
+pypdf
+torch
+accelerate
+gradio==4.44.1
+bitsandbytes
