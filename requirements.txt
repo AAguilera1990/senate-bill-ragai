@@ -7,3 +7,4 @@ torch
 accelerate
 gradio==4.44.1
 bitsandbytes
+langchain-community
