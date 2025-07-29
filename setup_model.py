@@ -1,9 +1,9 @@
 # Module 1: Load Libraries & Initialize Models for RAG Pipeline (with correct embedder max length)
 
 from sentence_transformers import SentenceTransformer
-from langchain.embeddings import SentenceTransformerEmbeddings
-from langchain.vectorstores import Chroma
-from langchain.llms import HuggingFacePipeline
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_community.llms import HuggingFacePipeline
 from langchain.text_splitter import TokenTextSplitter
 from transformers import (
     AutoModelForCausalLM,
@@ -44,7 +44,7 @@ llm = HuggingFacePipeline(pipeline=hf_pipeline)
 EMBED_MODEL_ID = "all-MiniLM-L6-v2"
 embeddings = SentenceTransformerEmbeddings(
     model_name=EMBED_MODEL_ID,
-    model_kwargs={"device": "cuda"}
+    model_kwargs={"device": "cpu"}
 )
 
 # 5. Determine the embedder’s true max token window via sentence-transformers
