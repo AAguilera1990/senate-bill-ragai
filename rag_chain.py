@@ -1,38 +1,37 @@
 # rag_chain.py
 
-from transformers import pipeline, AutoTokenizer
-from langchain.llms import HuggingFacePipeline
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 
 def build_rag_chain(model, tokenizer, chroma: Chroma, max_new_tokens=500, k=10):
     """
     Builds and returns a RetrievalQA chain with a custom prompt and retriever.
     """
-    # 1. Define your zero-shot prompt template
+    # 1. Define your tree of thought prompt template
     prompt_template = """
-    You are a legal assistant. Use the following context from the Bill guideline to answer clearly, citing section.
-    Context:
-    {context}
+You are a neutral legal assistant. Answer the user's question **only using the context provided below**, without any outside knowledge or opinions. Be concise, factual, and cite specific sections or language from the bill.
 
-    Question: {question}
-    Answer:
-    """
+Context:
+{context}
+
+Question: {question}
+
+Instructions:
+- Do not guess. If the answer is not in the context, reply: "The bill does not provide sufficient information to answer this."
+- When possible, include **quotes** or clear paraphrases from the text.
+- Always mention the **section number** or **page number** if available.
+
+Answer:
+"""
+
     prompt = PromptTemplate(
         input_variables=["context", "question"],
         template=prompt_template.strip()
     )
 
-    # 2. Create the LLM pipeline (limit generation tokens)
-    hf_pipeline = pipeline(
-        task="text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        return_full_text=False,
-        max_new_tokens=max_new_tokens
-    )
-    llm = HuggingFacePipeline(pipeline=hf_pipeline)
+    # 2. Use pre-wrapped model passed from setup_model
+    llm = model
 
     # 3. Compute token budget diagnostics
     static_example = prompt_template.format(context="", question="")
