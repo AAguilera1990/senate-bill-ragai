@@ -20,8 +20,9 @@ from transformers import (
 #     bnb_4bit_compute_dtype="float16"
 # )
 
-RAG_MODEL_ID = "mistralai/Mistral-7B-v0.1"
-HF_TOKEN = os.getenv("HF_TOKEN")
+RAG_MODEL_ID = "microsoft/phi-2"
+HF_TOKEN = None
+# HF_TOKEN = os.getenv("HF_TOKEN")
 
 # # 2. Load tokenizer & quantized model for RAG generation
 tokenizer = AutoTokenizer.from_pretrained(RAG_MODEL_ID)
@@ -33,7 +34,7 @@ tokenizer = AutoTokenizer.from_pretrained(RAG_MODEL_ID)
 
 model = AutoModelForCausalLM.from_pretrained(
     RAG_MODEL_ID,
-    token=HF_TOKEN
+    # token=HF_TOKEN
 )
 
 
