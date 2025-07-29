@@ -7,7 +7,7 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.schema import Document
 
 
-def simple_clean(text: str) -> str:
+def simple_clean(text: str) -> str:ac
     text = text.replace('\f', ' ')
     text = re.sub(r'-\s*\n\s*', '', text)
     text = text.replace('\r\n', '\n').replace('\r', '\n')

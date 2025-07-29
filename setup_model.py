@@ -68,7 +68,9 @@ chunker = TokenTextSplitter(
 
 # 7. Initialize ChromaDB for vector storage & retrieval
 chroma = Chroma(
-    embedding_function=embeddings
+    collection_name="senate_bill_rag",
+    embedding_function=embeddings,
+    persist_directory="chroma_db"
 )
 
 model = llm  # Expose HuggingFacePipeline so app.py can import it

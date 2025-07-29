@@ -55,3 +55,36 @@ def preview_embeddings(chroma, limit: int = 3):
         print("Embedding sample values:", emb[:5], "...")
         print("Embedding dimension:", len(emb))
         print()
+
+
+# chunk_and_embed.py (bottom of file)
+
+from pdf_loader import load_and_clean_pdfs
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+
+def main():
+    # 1. Load and clean PDFs from the BBB folder
+    docs = load_and_clean_pdfs("BBB")
+    cleaned_texts = [doc.page_content for doc in docs]
+
+    # 2. Chunk them
+    chunks = chunk_documents(docs, cleaned_texts)
+
+    # 3. Reinitialize Chroma (with persist so it can be loaded later)
+    embedder = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2", model_kwargs={"device": "cpu"})
+    chroma = Chroma(
+        collection_name="senate_bill_rag",
+        embedding_function=embedder,
+        persist_directory="chroma_db"
+    )
+
+    # 4. Embed and save
+    embed_chunks_to_chroma(chunks, chroma)
+    chroma.persist()
+
+    # 5. Optional: preview
+    preview_embeddings(chroma)
+
+if __name__ == "__main__":
+    main()
