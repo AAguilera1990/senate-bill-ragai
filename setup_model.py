@@ -20,7 +20,8 @@ quant_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype="float16"
 )
 
-RAG_MODEL_ID = "mistralai/Mistral-7B-v0.1"
+RAG_MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2"
+
 
 # 2. Load tokenizer & quantized model for RAG generation
 tokenizer = AutoTokenizer.from_pretrained(RAG_MODEL_ID)
