@@ -8,7 +8,7 @@ def build_rag_chain(model, tokenizer, chroma: Chroma, max_new_tokens=500, k=10):
     """
     Builds and returns a RetrievalQA chain with a custom prompt and retriever.
     """
-    # 1. Define your tree of thought prompt template
+    # 1. Define grounded, neutral, quote-enforcing prompt template
     prompt_template = """
 You are a neutral legal assistant. Answer the user's question **only using the context provided below**, without any outside knowledge or opinions. Be concise, factual, and cite specific sections or language from the bill.
 
