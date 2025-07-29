@@ -1,35 +1,22 @@
 # Module 1: Load Libraries & Initialize Models for RAG Pipeline (with correct embedder max length)
 
 from sentence_transformers import SentenceTransformer
-from langchain.embeddings import SentenceTransformerEmbeddings
-from langchain.vectorstores import Chroma
-from langchain.llms import HuggingFacePipeline
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_community.llms import HuggingFacePipeline
 from langchain.text_splitter import TokenTextSplitter
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    BitsAndBytesConfig,
     pipeline
 )
 
-# 1. Quantization config for Mistral 7B
-quant_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_use_double_quant=True,
-    bnb_4bit_compute_dtype="float16"
-)
+# 1. Use open-access model (no auth required on Hugging Face Spaces)
+RAG_MODEL_ID = "google/gemma-2b-it"
 
-RAG_MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2"
-
-
-# 2. Load tokenizer & quantized model for RAG generation
+# 2. Load tokenizer & model for RAG generation
 tokenizer = AutoTokenizer.from_pretrained(RAG_MODEL_ID)
-model = AutoModelForCausalLM.from_pretrained(
-    RAG_MODEL_ID,
-    quantization_config=quant_config,
-    device_map="auto"
-)
+model = AutoModelForCausalLM.from_pretrained(RAG_MODEL_ID)
 
 # 3. Wrap in a Hugging Face text-generation pipeline (limit new tokens)
 hf_pipeline = pipeline(
